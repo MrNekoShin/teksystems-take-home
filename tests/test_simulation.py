@@ -30,3 +30,27 @@ class TestSimulationInitialization:
         """Test the initialization of the Simulation class with empty field size."""
         with pytest.raises(ValueError, match="Field size must be a tuple of two positive integers."):
             Simulation(field_size=())
+
+
+class TestSimulationCarManagement:
+    """Test Module for Car Management in Simulation Class."""
+    
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        """Setup a simulation instance for testing."""
+        self.simulation = Simulation(field_size=(10, 10))
+
+    def test_add_car(self):
+        """Test adding a car to the simulation."""
+        from src.car import Car
+        car = Car(name="TestCar", position=(0, 0), orientation='N', instructions="")
+        self.simulation.add_car(car)
+        
+        assert len(self.simulation.cars) == 1
+        assert self.simulation.cars[0].name == "TestCar"
+    
+    def test_add_invalid_car(self):
+        """Test adding an invalid car to the simulation."""
+        from src.car import Car
+        with pytest.raises(ValueError, match="Invalid car."):
+            self.simulation.add_car("Not a car instance")
