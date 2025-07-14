@@ -1,4 +1,5 @@
 import pytest
+from src.car import Car
 from src.simulation import Simulation
 
 class TestSimulationInitialization:
@@ -84,3 +85,22 @@ class TestSimulationCarManagement:
         with pytest.raises(ValueError, match="Position out of bounds."):
             self.simulation.add_car(car)
         
+class TestSimulationCarFieldMovement:
+    """Test Module for Car Movement in Simulation Class."""
+    
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        """Setup a simulation instance for testing."""
+        self.simulation = Simulation(field_size=(10, 10))
+        self.simulation.add_car(Car(name="TestCarA", position=(0, 0), orientation='N', instructions=""))
+
+    def test_move_car_within_bounds(self):
+        """Test moving a car within the field bounds."""
+        car = self.simulation.cars[0]
+        car.position = (0, 0)
+        car.orientation = 'N'
+
+        # Test Simulation's move method
+        valid = self.simulation.move_car(0)
+        assert valid is True
+        assert car.position == (0, 1)
