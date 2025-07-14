@@ -49,3 +49,34 @@ class TestCarRotation:
         """Test the car's invalid rotation."""
         with pytest.raises(ValueError, match="Invalid rotation command."):
             self.car.rotate('X')
+
+
+class TestCarMovement:
+    """Test Module for Car Class Movement."""
+    def test_car_movement_north(self):
+        """Test the car's movement based on instructions."""
+        car = Car(name="Mover", position=(0, 0), orientation='N', instructions="")
+        
+        car.move() # car moves forward
+        assert car.position == (0, 1)
+
+    def test_car_movement_east(self):
+        """Test the car's movement towards the east."""
+        car = Car(name="Mover", position=(0, 0), orientation='E', instructions="")
+        
+        car.move() # car moves forward
+        assert car.position == (1, 0)
+
+    def test_car_movement_south(self):
+        """Test the car's movement towards the south."""
+        car = Car(name="Mover", position=(0, 1), orientation='S', instructions="")
+        
+        car.move() # car moves forward
+        assert car.position == (0, 0)
+
+    def test_car_movement_west(self):
+        """Test the car's movement towards the west."""
+        car = Car(name="Mover", position=(1, 0), orientation='W', instructions="")
+        
+        car.move() # car moves forward
+        assert car.position == (0, 0)
