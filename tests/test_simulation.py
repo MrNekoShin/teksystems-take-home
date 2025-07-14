@@ -55,6 +55,13 @@ class TestSimulationCarManagement:
         with pytest.raises(ValueError, match="Invalid car."):
             self.simulation.add_car("Not a car instance")
 
+    def add_car_with_invalid_position(self):
+        """Test adding a car with an invalid position."""
+        from src.car import Car
+        car = Car(name="InvalidPositionCar", position=(10, 10), orientation='N', instructions="")
+        with pytest.raises(ValueError, match="Position out of bounds."):
+            self.simulation.add_car(car)
+
     def test_add_multiple_cars(self):
         """Test adding multiple cars to the simulation."""
         from src.car import Car
@@ -68,22 +75,27 @@ class TestSimulationCarManagement:
         assert self.simulation.cars[0].name == "Car1"
         assert self.simulation.cars[1].name == "Car2"
 
-    def test_add_car_with_same_name(self):
+    def test_add_multiple_cars_with_same_name(self):
         """Test adding a car with the same name."""
         from src.car import Car
         car1 = Car(name="SameNameCar", position=(0, 0), orientation='N', instructions="")
         car2 = Car(name="SameNameCar", position=(1, 1), orientation='E', instructions="")
                 
+        self.simulation.add_car(car1)
+        
         with pytest.raises(ValueError, match="Car with this name already exists."):
-            self.simulation.add_car(car1)
             self.simulation.add_car(car2)
-
-    def add_car_with_invalid_position(self):
-        """Test adding a car with an invalid position."""
+    
+    def test_add_multiple_cars_with_same_position(self):
+        """Test adding multiple cars with the same position."""
         from src.car import Car
-        car = Car(name="InvalidPositionCar", position=(10, 10), orientation='N', instructions="")
-        with pytest.raises(ValueError, match="Position out of bounds."):
-            self.simulation.add_car(car)
+        car1 = Car(name="Car1", position=(0, 0), orientation='N', instructions="")
+        car2 = Car(name="Car2", position=(0, 0), orientation='E', instructions="")
+        
+        self.simulation.add_car(car1)
+        
+        with pytest.raises(ValueError, match="Position already occupied by another car."):
+            self.simulation.add_car(car2)
         
 class TestSimulationCarFieldMovement:
     """Test Module for Car Movement in Simulation Class."""
