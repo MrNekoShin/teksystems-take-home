@@ -48,6 +48,10 @@ class Simulation:
         
         car = self.cars[car_index]
 
+        #check if car has collided
+        if car.collision:
+            return False
+
         #remove car from current position in the field
         if car in self.cars_in_field:
             del self.cars_in_field[car.position]
@@ -63,9 +67,6 @@ class Simulation:
         # Check for collisions with other cars
         if next_position in self.cars_in_field:
             other_car = self.cars_in_field[next_position]
-   
-            print(f"Collision detected between {car.name} and {other_car.name} at position {next_position}")
-
             car.collided(other_car)
             self.cars_in_field[next_position] = [car, other_car]
             
