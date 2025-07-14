@@ -24,6 +24,22 @@ class Car:
         
     def __repr__(self):
         return f"{self.name}, {self.position} {self.orientation}, {self.instructions}"
+    
+    def rotate(self, direction):
+        """Rotate the car left or right."""
+        if direction not in ['L', 'R']:
+            raise ValueError("Invalid rotation command.")
+        
+        orientations = ['N', 'E', 'S', 'W']
+        idx = orientations.index(self.orientation)
+        
+        if direction == 'L':
+            idx = (idx - 1) % len(orientations)
+        elif direction == 'R':
+            idx = (idx + 1) % len(orientations)
+        
+        self.orientation = orientations[idx]
+        
 
 
 if __name__ == "__main__":
