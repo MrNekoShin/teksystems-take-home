@@ -54,3 +54,18 @@ class TestSimulationCarManagement:
         from src.car import Car
         with pytest.raises(ValueError, match="Invalid car."):
             self.simulation.add_car("Not a car instance")
+
+    def test_add_multiple_cars(self):
+        """Test adding multiple cars to the simulation."""
+        from src.car import Car
+        car1 = Car(name="Car1", position=(0, 0), orientation='N', instructions="")
+        car2 = Car(name="Car2", position=(1, 1), orientation='E', instructions="")
+        
+        self.simulation.add_car(car1)
+        self.simulation.add_car(car2)
+        
+        assert len(self.simulation.cars) == 2
+        assert self.simulation.cars[0].name == "Car1"
+        assert self.simulation.cars[1].name == "Car2"
+
+        
