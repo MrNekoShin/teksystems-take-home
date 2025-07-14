@@ -40,6 +40,17 @@ class Car:
         
         self.orientation = orientations[idx]
         
+    def move(self):
+        """Move the car forward in the current orientation."""
+        if self.orientation == 'N':
+            self.position = (self.position[0], self.position[1] + 1)
+        elif self.orientation == 'E':
+            self.position = (self.position[0] + 1, self.position[1])
+        elif self.orientation == 'S':
+            self.position = (self.position[0], self.position[1] - 1)
+        elif self.orientation == 'W':
+            self.position = (self.position[0] - 1, self.position[1])
+        
 
 
 if __name__ == "__main__":
