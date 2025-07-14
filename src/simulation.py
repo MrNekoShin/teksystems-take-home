@@ -18,6 +18,8 @@ class Simulation:
         if not isinstance(car, Car):
             raise ValueError("Invalid car.")
         
-        self.cars[0] = car
+        # Get index for car based on add logic (e.g., next available index)
+        car_index = len(self.cars)
+        self.cars[car_index] = car
 
         
