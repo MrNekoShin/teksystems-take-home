@@ -51,7 +51,6 @@ class TestSimulationCarManagement:
     
     def test_add_invalid_car(self):
         """Test adding an invalid car to the simulation."""
-        from src.car import Car
         with pytest.raises(ValueError, match="Invalid car."):
             self.simulation.add_car("Not a car instance")
 
