@@ -12,14 +12,19 @@ class Simulation:
         
         self.field = Field(width=field_size[0], height=field_size[1])
         self.cars = {}
+        self.car_names = set()
 
     def add_car(self, car):
         """Add a car to the simulation."""
         if not isinstance(car, Car):
             raise ValueError("Invalid car.")
         
+        if car.name in self.car_names:
+            raise ValueError("Car with this name already exists.")
+        
         # Get index for car based on add logic (e.g., next available index)
         car_index = len(self.cars)
         self.cars[car_index] = car
+        self.car_names.add(car.name)
 
         
