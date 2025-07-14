@@ -77,6 +77,10 @@ class TestSimulationCarManagement:
             self.simulation.add_car(car1)
             self.simulation.add_car(car2)
 
-        
-
+    def add_car_with_invalid_position(self):
+        """Test adding a car with an invalid position."""
+        from src.car import Car
+        car = Car(name="InvalidPositionCar", position=(10, 10), orientation='N', instructions="")
+        with pytest.raises(ValueError, match="Position out of bounds."):
+            self.simulation.add_car(car)
         
