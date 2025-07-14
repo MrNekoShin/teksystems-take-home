@@ -49,6 +49,10 @@ class Simulation:
         else:
             raise ValueError("Invalid orientation.")
         
+        #check if next position is within bounds
+        if not (0 <= next_position[0] < self.field.width and 0 <= next_position[1] < self.field.height):
+            return False  # Cannot move out of bounds
+        
         car.position = next_position
 
         return True
