@@ -32,3 +32,23 @@ class Simulation:
         self.car_names.add(car.name)
 
         
+    def move_car(self, car_index):
+        """Move a car in the simulation."""
+        
+        car = self.cars[car_index]
+
+        #check car's next position based on its orientation
+        if car.orientation == 'N':
+            next_position = (car.position[0], car.position[1] + 1)
+        elif car.orientation == 'E':
+            next_position = (car.position[0] + 1, car.position[1])
+        elif car.orientation == 'S':
+            next_position = (car.position[0], car.position[1] - 1)
+        elif car.orientation == 'W':
+            next_position = (car.position[0] - 1, car.position[1])
+        else:
+            raise ValueError("Invalid orientation.")
+        
+        car.position = next_position
+
+        return True
