@@ -192,3 +192,28 @@ class TestSimulationCarCollision:
         assert car2.collision.name == "Car1"
         assert car1.position == (0, 0)
         assert car2.position == (0, 0)
+
+    def test_moving_collided_cars(self):
+        """Test moving cars after a collision."""
+
+        car1 = self.simulation.cars[0]
+        car2 = self.simulation.cars[1]
+
+        # Move them into each other
+        valid = self.simulation.move_car(1)  # Move Car2
+        assert valid is True
+        assert car1.collision.name == "Car2"
+        assert car2.collision.name == "Car1"
+        assert car1.position == (0, 0)
+        assert car2.position == (0, 0)
+
+        # Try to move them again
+        valid1 = self.simulation.move_car(0)
+        valid2 = self.simulation.move_car(1)
+
+        assert valid1 is False
+        assert valid2 is False
+        assert car1.position == (0, 0)
+        assert car2.position == (0, 0)
+        assert car1 in self.simulation.cars_in_field[(0, 0)]
+        assert car2 in self.simulation.cars_in_field[(0, 0)]
