@@ -27,6 +27,11 @@ class TestCarInitialization:
         with pytest.raises(ValueError, match="Initial position must be a tuple of two positive integers."):
             Car(name="Test", position=(0, -1), orientation='N', instructions="")
 
+    def test_car_initialization_with_invalid_instructions(self):
+        """Test the initialization of the Car class with invalid instructions."""
+        with pytest.raises(ValueError, match="Instructions must be a string."):
+            Car(name="Test", position=(0, 0), orientation='N', instructions=123)
+
 class TestCarRotation:
     """Test Module for Car Class Rotation."""
 
