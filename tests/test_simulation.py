@@ -104,3 +104,14 @@ class TestSimulationCarFieldMovement:
         valid = self.simulation.move_car(0)
         assert valid is True
         assert car.position == (0, 1)
+
+    def test_move_car_out_of_bounds(self):
+        """Test moving a car out of the field bounds."""
+        car = self.simulation.cars[0]
+        car.position = (0, 9)  # Near the top edge
+        car.orientation = 'N'
+    
+        valid = self.simulation.move_car(0)
+        assert valid is False
+        assert car.position == (0, 9)  # Position should not change if out of bounds
+        
