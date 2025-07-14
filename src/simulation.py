@@ -22,6 +22,10 @@ class Simulation:
         if car.name in self.car_names:
             raise ValueError("Car with this name already exists.")
         
+        #check if the car's position is within the field bounds
+        if not (0 <= car.position[0] < self.field.width and 0 <= car.position[1] < self.field.height):
+            raise ValueError("Position out of bounds.")
+        
         # Get index for car based on add logic (e.g., next available index)
         car_index = len(self.cars)
         self.cars[car_index] = car
