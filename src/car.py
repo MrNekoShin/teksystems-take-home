@@ -1,6 +1,13 @@
 
 class Car:
 
+    DIRECTIONS_DELTA = {
+        'N': (0, 1),
+        'E': (1, 0),
+        'S': (0, -1),
+        'W': (-1, 0)
+    }
+
     def __init__(self, name, position, orientation, instructions):
         """Initialize the Car with an position and orientation."""
 
@@ -40,17 +47,16 @@ class Car:
         
         self.orientation = orientations[idx]
         
+    def next_position(self):
+        """Calculate the next position based on current orientation."""
+        delta = self.DIRECTIONS_DELTA[self.orientation]
+        return (self.position[0] + delta[0], self.position[1] + delta[1])
+    
+
     def move(self):
         """Move the car forward in the current orientation."""
-        if self.orientation == 'N':
-            self.position = (self.position[0], self.position[1] + 1)
-        elif self.orientation == 'E':
-            self.position = (self.position[0] + 1, self.position[1])
-        elif self.orientation == 'S':
-            self.position = (self.position[0], self.position[1] - 1)
-        elif self.orientation == 'W':
-            self.position = (self.position[0] - 1, self.position[1])
-        
+        self.position = self.next_position()
+    
 
 
 if __name__ == "__main__":

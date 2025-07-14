@@ -37,22 +37,12 @@ class Simulation:
         
         car = self.cars[car_index]
 
-        #check car's next position based on its orientation
-        if car.orientation == 'N':
-            next_position = (car.position[0], car.position[1] + 1)
-        elif car.orientation == 'E':
-            next_position = (car.position[0] + 1, car.position[1])
-        elif car.orientation == 'S':
-            next_position = (car.position[0], car.position[1] - 1)
-        elif car.orientation == 'W':
-            next_position = (car.position[0] - 1, car.position[1])
-        else:
-            raise ValueError("Invalid orientation.")
+        next_position = car.next_position()
         
         #check if next position is within bounds
         if not (0 <= next_position[0] < self.field.width and 0 <= next_position[1] < self.field.height):
             return False  # Cannot move out of bounds
         
-        car.position = next_position
+        car.move()
 
         return True
