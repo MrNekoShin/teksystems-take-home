@@ -1,5 +1,11 @@
-from src.car import Car
-from src.field import Field
+try:
+    # Try absolute imports first (for pytest, imports from outside)
+    from src.car import Car
+    from src.field import Field
+except ImportError:
+    # Fall back to direct imports (for running directly)
+    from car import Car
+    from field import Field
 
 
 class Simulation:
@@ -42,6 +48,10 @@ class Simulation:
         
         car = self.cars[car_index]
 
+        #remove car from current position in the field
+        if car in self.cars_in_field:
+            del self.cars_in_field[car.position]
+
         next_position = car.next_position()
         
         #check if next position is within bounds
@@ -50,4 +60,44 @@ class Simulation:
         
         car.move()
 
+        # Check for collisions with other cars
+        if next_position in self.cars_in_field:
+            other_car = self.cars_in_field[next_position]
+   
+            print(f"Collision detected between {car.name} and {other_car.name} at position {next_position}")
+
+            car.collided(other_car)
+            self.cars_in_field[next_position] = [car, other_car]
+            
+        else:
+            # Update car's position in the field
+            self.cars_in_field[next_position] = car
+
+
         return True
+    
+
+if __name__ == "__main__":
+    simulation = Simulation(field_size=(10, 10))
+    car1 = Car(name="Car1", position=(0, 0), orientation='N', instructions="")
+    car2 = Car(name="Car2", position=(1, 1), orientation='W', instructions="")
+
+    simulation.add_car(car1)
+    simulation.add_car(car2)
+
+    print("Initial car positions:")
+    for car in simulation.cars.values():
+        print(car)
+
+    # Move car1
+    simulation.move_car(0)
+    print("\nAfter moving Car1:")
+    for car in simulation.cars.values():
+        print(car)
+
+    # Move car2 to collide with car1
+    simulation.move_car(1)
+    print("\nAfter moving Car2 to collide with Car1:")
+    for car in simulation.cars.values():
+        print(car)
+
