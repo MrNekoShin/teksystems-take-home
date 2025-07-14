@@ -126,4 +126,47 @@ class TestSimulationCarFieldMovement:
         valid = self.simulation.move_car(0)
         assert valid is False
         assert car.position == (0, 9)  # Position should not change if out of bounds
+
+        car.orientation = 'W'  # Change orientation to West
+        valid = self.simulation.move_car(0)
+        assert valid is False
+        assert car.position == (0, 9)
+
+        car.orientation = 'E'  # Change orientation to East
+        car.position = (9, 0)  # Near the right edge
+        valid = self.simulation.move_car(0)
+        assert valid is False
+        assert car.position == (9, 0)
+
+        car.orientation = 'S'  # Change orientation to South
+        valid = self.simulation.move_car(0)
+        assert valid is False
+        assert car.position == (9, 0)
+
+    def test_move_car_to_edge(self):
+        """Test moving a car to the edge of the field."""
+        car = self.simulation.cars[0]
+        car.position = (8, 8)
+        car.orientation = 'E'  # Facing East
+
+        valid = self.simulation.move_car(0)
+        assert valid is True
+        assert car.position == (9, 8)
+        
+        car.orientation = 'N'
+        valid = self.simulation.move_car(0)
+        assert valid is True
+        assert car.position == (9, 9)
+
+        car.position = (1, 1)
+        car.orientation = 'S'  # Facing South
+        valid = self.simulation.move_car(0)
+        assert valid is True
+        assert car.position == (1, 0)
+
+        car.orientation = 'W'
+        valid = self.simulation.move_car(0)
+        assert valid is True
+        assert car.position == (0, 0)  
+
         
