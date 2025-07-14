@@ -68,4 +68,16 @@ class TestSimulationCarManagement:
         assert self.simulation.cars[0].name == "Car1"
         assert self.simulation.cars[1].name == "Car2"
 
+    def test_add_car_with_same_name(self):
+        """Test adding a car with the same name."""
+        from src.car import Car
+        car1 = Car(name="SameNameCar", position=(0, 0), orientation='N', instructions="")
+        car2 = Car(name="SameNameCar", position=(1, 1), orientation='E', instructions="")
+                
+        with pytest.raises(ValueError, match="Car with this name already exists."):
+            self.simulation.add_car(car1)
+            self.simulation.add_car(car2)
+
+        
+
         
