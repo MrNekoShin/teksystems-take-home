@@ -1,3 +1,4 @@
+from src.car import Car
 from src.field import Field
 
 
@@ -10,3 +11,13 @@ class Simulation:
             raise ValueError("Field size must be a tuple of two positive integers.")
         
         self.field = Field(width=field_size[0], height=field_size[1])
+        self.cars = {}
+
+    def add_car(self, car):
+        """Add a car to the simulation."""
+        if not isinstance(car, Car):
+            raise ValueError("Invalid car.")
+        
+        self.cars[0] = car
+
+        
