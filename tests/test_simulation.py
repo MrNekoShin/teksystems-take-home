@@ -82,7 +82,7 @@ class TestSimulationCarManagement:
         car2 = Car(name="SameNameCar", position=(1, 1), orientation='E', instructions="")
                 
         self.simulation.add_car(car1)
-        
+
         with pytest.raises(ValueError, match="Car with this name already exists."):
             self.simulation.add_car(car2)
     
@@ -170,3 +170,25 @@ class TestSimulationCarFieldMovement:
         assert car.position == (0, 0)  
 
         
+class TestSimulationCarCollision:
+    """Test Module for Car Collision in Simulation Class."""
+    
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        """Setup a simulation instance for testing."""
+        self.simulation = Simulation(field_size=(10, 10))
+        self.simulation.add_car(Car(name="Car1", position=(0, 0), orientation='N', instructions=""))
+        self.simulation.add_car(Car(name="Car2", position=(1, 0), orientation='W', instructions=""))
+
+    def test_move_cars_into_each_other(self):
+        """Test moving two cars into the same position."""
+        car1 = self.simulation.cars[0]
+        car2 = self.simulation.cars[1]
+
+        #Move Car2 to collide with Car1
+        valid = self.simulation.move_car(1)
+        assert valid is True
+        assert car1.collision.name == "Car2"
+        assert car2.collision.name == "Car1"
+        assert car1.position == (0, 0)
+        assert car2.position == (0, 0)
