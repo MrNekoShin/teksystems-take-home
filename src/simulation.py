@@ -77,6 +77,15 @@ class Simulation:
 
         return True
     
+    def execute_instructions(self, car_index):
+        """Execute the instructions for a car."""
+        car = self.cars[car_index]
+
+        curr_command = car.instructions[0]
+
+        if curr_command == 'F':
+            self.move_car(car_index)
+    
 
 if __name__ == "__main__":
     simulation = Simulation(field_size=(10, 10))
