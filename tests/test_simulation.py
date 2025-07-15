@@ -228,6 +228,15 @@ class TestSimulationInstructions:
         self.simulation = Simulation(field_size=(10, 10))
         self.simulation.add_car(Car(name="TestCar", position=(0, 0), orientation='N', instructions=""))
 
+    def test_car_no_instructions_execution(self):
+        """Test executing instructions when no instructions are available."""
+        car = self.simulation.cars[0]
+        car.instructions = ""
+
+        self.simulation.execute_instructions(0)
+        
+        assert car.position == (0, 0)
+        
     def test_car_forward_instructions_execution(self):
         """Test executing car instructions."""
         car = self.simulation.cars[0]
@@ -249,7 +258,6 @@ class TestSimulationInstructions:
         self.simulation.execute_instructions(0)
         assert car.position == (0, 2)
         assert car.instructions == ""  # No remaining instructions after second execution
-
 
 
 
