@@ -81,6 +81,9 @@ class Simulation:
         """Execute the instructions for a car."""
         car = self.cars[car_index]
 
+        if car.collision:
+            return  # Do not execute instructions if the car has collided
+
         curr_command = car.instructions[0] if car.instructions else None
 
         if curr_command == 'F':
@@ -92,6 +95,10 @@ class Simulation:
 
         car.instructions = car.instructions[1:]  # Remove the executed command
     
+    def run_simulation(self):
+        """Run the simulation by executing all car instructions."""
+        for car_index in range(len(self.cars)):
+            self.execute_instructions(car_index)
 
 if __name__ == "__main__":
     simulation = Simulation(field_size=(10, 10))
