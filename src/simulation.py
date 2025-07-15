@@ -85,6 +85,10 @@ class Simulation:
 
         if curr_command == 'F':
             self.move_car(car_index)
+        elif curr_command == 'L':
+            car.rotate('L')
+        elif curr_command == 'R':
+            car.rotate('R')
 
         car.instructions = car.instructions[1:]  # Remove the executed command
     
