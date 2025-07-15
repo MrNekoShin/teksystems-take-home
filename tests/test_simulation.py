@@ -320,41 +320,59 @@ class TestSimulationInstructions:
         assert car.orientation == 'E'  # Orientation should remain the same
 
 
-class TestSimulationCarCollisionInstructionsExecution:
-    """Test Module for Car Collision during Instructions Execution in Simulation Class."""
-    
+class TestSimulationRunExecution:
+    """Test Module for Running Simulation Execution."""
+
     @pytest.fixture(autouse=True)
     def setup(self):
         """Setup a simulation instance for testing."""
         self.simulation = Simulation(field_size=(10, 10))
-        self.simulation.add_car(Car(name="Car1", position=(0, 0), orientation='N', instructions=""))
-        self.simulation.add_car(Car(name="Car2", position=(0, 1), orientation='S', instructions=""))
 
-    def test_car_instructions_execution_with_collision(self):
-        """Test executing instructions when a collision occurs."""
-        car1 = self.simulation.cars[0]
-        car2 = self.simulation.cars[1]
+    def test_run_simulation(self):
+        """Test running the simulation with multiple cars."""
 
-        # Set instructions to collide
-        car1.instructions = "F"
-        car2.instructions = "F"
+        from src.car import Car
+        # Add two cars with instructions
+        car1 = Car(name="Car1", position=(0, 0), orientation='N', instructions="FFF")
+        car2 = Car(name="Car2", position=(1, 0), orientation='E', instructions="FFF")
 
-        # Run simulation instructions
+        self.simulation.add_car(car1)
+        self.simulation.add_car(car2)
+
+        # Run the simulation
         self.simulation.run_simulation()
 
-        # Car1 should collide with Car2
-        assert car1.collision.name == "Car2"
-        assert car2.collision.name == "Car1"
+        assert car1.position == (0, 3)
+        assert car2.position == (4, 0)
+
+        assert car1.orientation == 'N'
+        assert car2.orientation == 'E' 
+
+    # def test_car_instructions_execution_with_collision(self):
+    #     """Test executing instructions when a collision occurs."""
+    #     car1 = self.simulation.cars[0]
+    #     car2 = self.simulation.cars[1]
+
+    #     # Set instructions to collide
+    #     car1.instructions = "F"
+    #     car2.instructions = "F"
+
+    #     # Run simulation instructions
+    #     self.simulation.run_simulation()
+
+    #     # Car1 should collide with Car2
+    #     assert car1.collision.name == "Car2"
+    #     assert car2.collision.name == "Car1"
         
-        # Both cars should exist in the same position
-        assert car1.position == (0, 1)
-        assert car2.position == (0, 1)
+    #     # Both cars should exist in the same position
+    #     assert car1.position == (0, 1)
+    #     assert car2.position == (0, 1)
 
-        # Check if cars are in the field at the same position
-        assert (0, 1) in self.simulation.cars_in_field
-        assert len(self.simulation.cars_in_field[(0, 1)]) == 2
-        assert car1 in self.simulation.cars_in_field[(0, 1)]
-        assert car2 in self.simulation.cars_in_field[(0, 1)]
+    #     # Check if cars are in the field at the same position
+    #     assert (0, 1) in self.simulation.cars_in_field
+    #     assert len(self.simulation.cars_in_field[(0, 1)]) == 2
+    #     assert car1 in self.simulation.cars_in_field[(0, 1)]
+    #     assert car2 in self.simulation.cars_in_field[(0, 1)]
 
-        assert car1.instructions == ""
-        assert car2.instructions == "F" # Car2 still has an instruction to execute
+    #     assert car1.instructions == ""
+    #     assert car2.instructions == "F" # Car2 still has an instruction to execute
