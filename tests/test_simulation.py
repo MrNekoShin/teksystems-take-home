@@ -346,7 +346,21 @@ class TestSimulationRunExecution:
         assert car2.position == (4, 0)
 
         assert car1.orientation == 'N'
-        assert car2.orientation == 'E' 
+        assert car2.orientation == 'E'
+         
+    def test_run_simulation_with_no_instructions(self):
+        """Test running the simulation when no cars have instructions."""
+        from src.car import Car
+        # Add a car with no instructions
+        car1 = Car(name="Car1", position=(0, 0), orientation='N', instructions="")
+        
+        self.simulation.add_car(car1)
+        
+        # Run the simulation
+        self.simulation.run_simulation()
+        assert car1.position == (0, 0)  # Position should remain unchanged
+        assert car1.instructions == ""  # Instructions should remain unchanged
+        assert not car1.collision  # No collision should occur
 
     def test_car_instructions_execution_with_collision(self):
         """Test executing instructions when a collision occurs."""
