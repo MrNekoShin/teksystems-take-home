@@ -1,5 +1,5 @@
 
-class Field():
+class Field:
     def __init__(self, width, height):
         """Initialize the Field with Width and Height coordinates."""
         if not isinstance(width, int) or not isinstance(height, int) or width < 0 or height < 0:
