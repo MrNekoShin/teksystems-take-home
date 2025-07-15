@@ -97,8 +97,17 @@ class Simulation:
     
     def run_simulation(self):
         """Run the simulation by executing all car instructions."""
-        for car_index in range(len(self.cars)):
-            self.execute_instructions(car_index)
+        
+        while True:
+            # Check if all cars have either no instructions left or have collided
+            if all(car.instructions == "" or car.collision for car in self.cars.values()):
+                break
+            
+            # Execute instructions for each car
+            for car_index in range(len(self.cars)):
+                self.execute_instructions(car_index)
+
+            
 
 if __name__ == "__main__":
     simulation = Simulation(field_size=(10, 10))
