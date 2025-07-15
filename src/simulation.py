@@ -81,11 +81,11 @@ class Simulation:
         """Execute the instructions for a car."""
         car = self.cars[car_index]
 
-        curr_command = car.instructions[0]
+        curr_command = car.instructions[0] if car.instructions else None
 
         if curr_command == 'F':
             self.move_car(car_index)
-            
+
         car.instructions = car.instructions[1:]  # Remove the executed command
     
 
