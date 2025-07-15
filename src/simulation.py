@@ -85,6 +85,8 @@ class Simulation:
 
         if curr_command == 'F':
             self.move_car(car_index)
+            
+        car.instructions = car.instructions[1:]  # Remove the executed command
     
 
 if __name__ == "__main__":
