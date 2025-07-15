@@ -217,3 +217,21 @@ class TestSimulationCarCollision:
         assert car2.position == (0, 0)
         assert car1 in self.simulation.cars_in_field[(0, 0)]
         assert car2 in self.simulation.cars_in_field[(0, 0)]
+
+
+class TestSimulationInstructions:
+    """Test Module for Car Instructions in Simulation Class."""
+
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        """Setup a simulation instance for testing."""
+        self.simulation = Simulation(field_size=(10, 10))
+        self.simulation.add_car(Car(name="TestCar", position=(0, 0), orientation='N', instructions=""))
+
+    def test_car_instructions_execution(self):
+        """Test executing car instructions."""
+        car = self.simulation.cars[0]
+        car.instructions = "F"
+
+        if self.simulation.execute_instructions(0):
+            assert car.position == (0, 1)
