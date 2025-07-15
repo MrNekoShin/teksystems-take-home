@@ -28,6 +28,7 @@ class Car:
         self.orientation = orientation
         self.instructions = instructions
         self.collision = None
+        self.collision_step = None
 
         
     def __repr__(self):
@@ -58,10 +59,12 @@ class Car:
         """Move the car forward in the current orientation."""
         self.position = self.next_position()
 
-    def collided(self, other_car):
+    def collided(self, other_car, step):
         """Handle collision with another car."""
         self.collision = other_car
         other_car.collision = self
+        self.collision_step = step
+        other_car.collision_step = step
     
 
 

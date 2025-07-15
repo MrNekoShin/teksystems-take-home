@@ -20,6 +20,7 @@ class Simulation:
         self.cars = {}
         self.car_names = set()
         self.cars_in_field = {}
+        self.step = 0  # Track the simulation step
 
     def add_car(self, car):
         """Add a car to the simulation."""
@@ -67,7 +68,7 @@ class Simulation:
         # Check for collisions with other cars
         if next_position in self.cars_in_field:
             other_car = self.cars_in_field[next_position]
-            car.collided(other_car)
+            car.collided(other_car, self.step)
             self.cars_in_field[next_position] = [car, other_car]
             
         else:
@@ -103,9 +104,12 @@ class Simulation:
             if all(car.instructions == "" or car.collision for car in self.cars.values()):
                 break
             
+            self.step += 1  # Increment the simulation step after each round of instructions
+            
             # Execute instructions for each car
             for car_index in range(len(self.cars)):
                 self.execute_instructions(car_index)
+            
 
             
 
