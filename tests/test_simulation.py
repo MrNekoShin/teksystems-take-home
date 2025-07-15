@@ -347,7 +347,7 @@ class TestSimulationRunExecution:
 
         assert car1.orientation == 'N'
         assert car2.orientation == 'E'
-         
+
     def test_run_simulation_with_no_instructions(self):
         """Test running the simulation when no cars have instructions."""
         from src.car import Car
@@ -391,3 +391,40 @@ class TestSimulationRunExecution:
 
         assert car1.instructions == ""
         assert car2.instructions == "F" # Car2 still has an instruction to execute
+
+    def test_car_instructions_execution_with_collision_steps_tracking(self):
+        """Test executing instructions with collision and steps tracking."""
+        from src.car import Car
+        # Add a car with multiple instructions
+        car1 = Car(name="Car1", position=(0, 0), orientation='N', instructions="FFFF")
+        car2 = Car(name="Car2", position=(0, 4), orientation='S', instructions="FFFF")
+
+        self.simulation.add_car(car1)
+        self.simulation.add_car(car2)
+        
+        # Run simulation instructions
+        self.simulation.run_simulation()
+
+        # Collision should occur
+        assert car1.collision.name == "Car2"
+        assert car2.collision.name == "Car1"
+        
+        # Both cars should end up at the same position
+        assert car1.position == (0, 2)
+        assert car2.position == (0, 2)
+
+        # Check if cars are in the field at the same position
+        assert (0, 2) in self.simulation.cars_in_field
+        assert len(self.simulation.cars_in_field[(0, 2)]) == 2
+        assert car1 in self.simulation.cars_in_field[(0, 2)]
+        assert car2 in self.simulation.cars_in_field[(0, 2)]
+
+        # Car1 should have instructions left after collision
+        assert car1.instructions == "FF"
+        assert car2.instructions == "FF"
+
+        # Cars should track collision step
+        assert car1.collision_step == 2
+        assert car2.collision_step == 2
+
+        
