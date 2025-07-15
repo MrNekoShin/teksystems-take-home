@@ -236,7 +236,7 @@ class TestSimulationInstructions:
         self.simulation.execute_instructions(0)
         
         assert car.position == (0, 0)
-        
+
     def test_car_forward_instructions_execution(self):
         """Test executing car instructions."""
         car = self.simulation.cars[0]
@@ -259,5 +259,63 @@ class TestSimulationInstructions:
         assert car.position == (0, 2)
         assert car.instructions == ""  # No remaining instructions after second execution
 
+    def test_car_rotation_right_instructions_execution(self):
+        """Test executing rotation instructions for a car."""
+        car = self.simulation.cars[0]
+        car.instructions = "RR"
 
+        self.simulation.execute_instructions(0)
+
+        assert car.orientation == 'E'
+        assert car.position == (0, 0)  # Position should not change on rotation
+
+        self.simulation.execute_instructions(0)
+        assert car.orientation == 'S'
+        assert car.position == (0, 0)
+
+    def test_car_rotation_left_instructions_execution(self):
+        """Test executing rotation instructions for a car."""
+        car = self.simulation.cars[0]
+        car.instructions = "LL"
+
+        self.simulation.execute_instructions(0)
+        
+        assert car.orientation == 'W'
+        assert car.position == (0, 0)
+
+        self.simulation.execute_instructions(0)
+
+        assert car.orientation == 'S'
+        assert car.position == (0, 0)
+
+    def test_car_combined_rotation_instructions_execution(self):
+        """Test executing a combination of forward and rotation instructions."""
+        car = self.simulation.cars[0]
+        car.instructions = "RL"
+
+        self.simulation.execute_instructions(0)
+        assert car.orientation == 'E'
+        assert car.position == (0, 0)
+        
+        self.simulation.execute_instructions(0)
+        assert car.orientation == 'N'
+        assert car.position == (0, 0)
+
+
+    def test_car_combined_instructions_execution(self):
+        """Test executing a combination of forward and rotation instructions."""
+        car = self.simulation.cars[0]
+        car.instructions = "FRF"
+
+        self.simulation.execute_instructions(0)
+        assert car.position == (0, 1)  # Move forward
+        assert car.orientation == 'N'  # Orientation should remain the same
+        
+        self.simulation.execute_instructions(0)
+        assert car.position == (0, 1)  # Still at (0, 1) after rotation
+        assert car.orientation == 'E'
+
+        self.simulation.execute_instructions(0)
+        assert car.position == (1, 1)  # Move forward again
+        assert car.orientation == 'E'  # Orientation should remain the same
 
