@@ -271,6 +271,15 @@ class TestClIGetCarNameUserInput:
 
         assert car_name == "TestCar", "Car name should be set to 'TestCar'."
 
+    def test_cli_get_car_name_input_whitespace(self, mocker):
+        """Test the CLI car name input handling with whitespace."""
+        user_input = "   TestCar   "
+        mocker.patch('builtins.input', return_value=user_input)
+
+        car_name = self.cli.get_car_name_input()
+
+        assert car_name == "TestCar", "Car name should be stripped of whitespace."
+
     def test_cli_get_car_name_input_empty(self, mocker):
         """Test the CLI car name input handling with empty input."""
         user_input = ""
