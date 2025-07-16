@@ -113,3 +113,13 @@ class CLI:
             return (x, y), direction
         except ValueError as e:
             raise ValueError(e)
+        
+    def get_car_instructions_input(self):
+        """Get the car's instructions."""
+        instructions = input().strip()
+        
+        # Validate that instructions only contain valid characters (e.g., L, R, F)
+        if not all(char in 'LRF' for char in instructions):
+            raise ValueError("Invalid command. Only 'L', 'R', and 'F' are allowed.")
+        
+        return instructions
