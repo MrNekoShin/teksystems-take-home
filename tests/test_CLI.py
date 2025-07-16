@@ -282,6 +282,76 @@ class TestClIGetCarNameUserInput:
 
 class TestCLIGetCarInitialPositionOrientationUserInput:
     """Test cases for the CLI get car initial position and orientation input method."""
+    @pytest.fixture(autouse=True)
+    def setup_method(self):
+        """Setup method to run before each test."""
+        self.cli = CLI()
+
+    def test_cli_get_car_initial_position_orientation_input(self, mocker):
+        """Test the CLI car initial position and orientation input handling."""
+        user_input = "1 2 N"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        position, orientation = self.cli.get_car_initial_position_and_orientation_input()
+
+        assert position == (1, 2), "Position should be set to (1, 2)."
+        assert orientation == 'N', "Orientation should be set to 'N'."
+
+    def test_cli_get_car_initial_position_orientation_invalid(self, mocker):
+        """Test the CLI car initial position and orientation input handling with invalid input."""
+        user_input = "1 -2 N"
+        mocker.patch('builtins.input', return_value=user_input)
+        
+        with pytest.raises(ValueError, match="Invalid input. Please enter in x y Direction format where Direction is one of N, E, S, W."):
+            self.cli.get_car_initial_position_and_orientation_input()
+
+    def test_cli_get_car_initial_position_orientation_non_integer(self, mocker):
+        """Test the CLI car initial position and orientation input handling with non-integer input."""
+        user_input = "1 a N"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid input. Please enter in x y Direction format where Direction is one of N, E, S, W."):
+            self.cli.get_car_initial_position_and_orientation_input()
+    
+    def test_cli_get_car_initial_position_orientation_invalid_direction(self, mocker):
+        """Test the CLI car initial position and orientation input handling with invalid direction."""
+        user_input = "1 2 X"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid input. Please enter in x y Direction format where Direction is one of N, E, S, W."):
+            self.cli.get_car_initial_position_and_orientation_input()
+        
+    def test_cli_get_car_initial_position_orientation_empty(self, mocker):
+        """Test the CLI car initial position and orientation input handling with empty input."""
+        user_input = ""
+        mocker.patch('builtins.input', return_value=user_input)
+        
+        with pytest.raises(ValueError, match="Invalid input. Please enter in x y Direction format where Direction is one of N, E, S, W."):
+            self.cli.get_car_initial_position_and_orientation_input()
+
+    def test_cli_get_car_initial_position_orientation_multiple_values(self, mocker):
+        """Test the CLI car initial position and orientation input handling with multiple values."""
+        user_input = "1 2 N E"
+        mocker.patch('builtins.input', return_value=user_input)
+        
+        with pytest.raises(ValueError, match="Invalid input. Please enter in x y Direction format where Direction is one of N, E, S, W."):
+            self.cli.get_car_initial_position_and_orientation_input()
+    
+    def test_cli_get_car_initial_position_orientation_special_characters(self, mocker):
+        """Test the CLI car initial position and orientation input handling with special characters."""
+        user_input = "1 2 @"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid input. Please enter in x y Direction format where Direction is one of N, E, S, W."):
+            self.cli.get_car_initial_position_and_orientation_input()
+
+    def test_cli_get_car_initial_position_orientation_invalid_input(self, mocker):
+        """Test the CLI car initial position and orientation input handling with invalid input."""
+        user_input = "1 2 N1"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid input. Please enter in x y Direction format where Direction is one of N, E, S, W."):
+            self.cli.get_car_initial_position_and_orientation_input()
 
 class TestCLIGetCarInstructionsUserInput:
     """Test cases for the CLI get car instructions input method."""
