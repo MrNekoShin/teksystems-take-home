@@ -141,8 +141,12 @@ class CLI:
     def add_car_loop(self):
         """Loop to add cars to the simulation."""
         while True:
-            self.options_menu_message()
-            choice = self.get_options_menu_input()
+            try:
+                self.options_menu_message()
+                choice = self.get_options_menu_input()
+            except ValueError as e:
+                print(e)
+                continue
 
             if choice == '1':
                 self.add_car()
@@ -151,36 +155,81 @@ class CLI:
 
     def add_car(self):
         """Add a car to the simulation."""
-        self.add_car_name_message()
-        car_name = self.get_car_name_input()
-
-        self.add_car_initial_position_and_orientation_message(car_name)
-        position, orientation = self.get_car_initial_position_and_orientation_input()
-
-        self.add_car_instructions_message(car_name)
-        instructions = self.get_car_instructions_input()
+        while True:
+            try:
+                self.add_car_name_message()
+                car_name = self.get_car_name_input()
+                break
+            
+            except ValueError as e:
+                print(e)
+                continue
+        
+        while True:
+            try:
+                self.add_car_initial_position_and_orientation_message(car_name)
+                position, orientation = self.get_car_initial_position_and_orientation_input()
+                break
+            
+            except ValueError as e:
+                print(e)
+                continue
+        
+        while True:
+            try:
+                self.add_car_instructions_message(car_name)
+                instructions = self.get_car_instructions_input()
+                break
+            
+            except ValueError as e:
+                print(e)
+                continue
         
         # Create and add the car to the simulation
         car = Car(name=car_name, position=position, orientation=orientation, instructions=instructions)
         self.simulation.add_car(car)
+    
+    def create_field_loop(self):
+        """Loop to create the simulation field."""
+        while True:
+            try:
+                self.create_field_message()
+                width, height = self.get_field_input()
+                break
             
+            except ValueError as e:
+                print(e)
+                continue
+            
+        self.simulation = Simulation(field_size=(width, height))
+        self.field_created_message(width, height)
+
+    def after_simulation_loop(self):
+        """Loop to handle options after simulation."""
+        while True:
+            try:
+                self.after_simulation_options_menu_message()
+                choice = self.get_after_simulation_options_menu_input()
+                return choice
+            except ValueError as e:
+                print(e)
+                continue
+        
+
+
     def main_loop(self):
         """Main loop to run the CLI."""
         self.welcome()
         
         while True:
-            self.create_field_message()
-            width, height = self.get_field_input()
-            self.simulation = Simulation(field_size=(width, height))
-            self.field_created_message(width, height)
+            self.create_field_loop()
             self.add_car_loop()
             
             self.list_cars_message()
             self.simulation.run_simulation()
             self.simulation_results_message()
 
-            self.after_simulation_options_menu_message()
-            choice = self.get_after_simulation_options_menu_input()
+            choice = self.after_simulation_loop()
 
             if choice == '2':
                 break
