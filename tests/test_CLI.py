@@ -124,9 +124,9 @@ class TestCLIMessages:
         assert "Car1, (0, 0) N, F" in captured.out, "First car results should be displayed."
         assert "Car2, (1, 1) W, L" in captured.out, "Second car results should be displayed."
 
-    def test_cli_after_simulation_options_menu(self, capsys):
+    def test_cli_after_simulation_options_menu_message(self, capsys):
         """Test the CLI options menu after simulation."""
-        self.cli.after_simulation_options_menu()
+        self.cli.after_simulation_options_menu_message()
 
         captured = capsys.readouterr()
         assert "Please choose from the following options:" in captured.out, "Options menu after simulation should be displayed."
