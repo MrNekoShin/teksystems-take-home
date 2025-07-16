@@ -97,3 +97,19 @@ class CLI:
             raise ValueError("Car name cannot be empty.")
         
         return car_name
+    
+    def get_car_initial_position_and_orientation_input(self):
+        """Get the car's initial position and orientation."""
+        position = input().strip()
+
+        pattern = r'^\d+\s+\d+\s+[NESW]$'
+        if not re.match(pattern, position):
+            raise ValueError("Invalid input. Please enter in x y Direction format where Direction is one of N, E, S, W.")
+
+        try:
+            x, y, direction = position.split()
+            x, y = int(x), int(y)
+            
+            return (x, y), direction
+        except ValueError as e:
+            raise ValueError(e)
