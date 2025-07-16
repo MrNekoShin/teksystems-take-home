@@ -36,8 +36,22 @@ class CLI:
 
     def list_cars_message(self):
         """Display the list of cars in the simulation."""
-        print("List of cars in the simulation:")
+        print("Your current list of cars are:")
 
         if self.simulation and self.simulation.cars:
             for car in self.simulation.cars.values():
                 print(car)
+
+    def simulation_results_message(self):
+        """Display the results of the simulation."""
+        print("After simulation, the result is:")
+
+        if self.simulation and self.simulation.cars:
+            for car in self.simulation.cars.values():
+                print(car)
+
+    def after_simulation_options_menu_message(self):
+        """Display options after simulation."""
+        print("Please choose from the following options:")
+        print("[1] Start over")
+        print("[2] Exit")
