@@ -123,3 +123,12 @@ class CLI:
             raise ValueError("Invalid command. Only 'L', 'R', and 'F' are allowed.")
         
         return instructions
+    
+    def get_after_simulation_options_menu_input(self):
+        """Get the user's choice after simulation."""
+        choice = input()
+
+        if choice not in ['1', '2']:
+            raise ValueError("Invalid choice. Please enter 1 or 2.")
+        
+        return choice
