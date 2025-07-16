@@ -1,6 +1,7 @@
 import re
 
 from src.car import Car
+from src.simulation import Simulation
 
 class CLI:
     def __init__(self):
@@ -163,4 +164,25 @@ class CLI:
         car = Car(name=car_name, position=position, orientation=orientation, instructions=instructions)
         self.simulation.add_car(car)
             
+    def main_loop(self):
+        """Main loop to run the CLI."""
+        self.welcome()
+        
+        while True:
+            self.create_field_message()
+            width, height = self.get_field_input()
+            self.simulation = Simulation(field_size=(width, height))
+            self.field_created_message(width, height)
+            self.add_car_loop()
+            
+            self.list_cars_message()
+            self.simulation.run_simulation()
+            self.simulation_results_message()
 
+            self.after_simulation_options_menu_message()
+            choice = self.get_after_simulation_options_menu_input()
+
+            if choice == '2':
+                break
+        
+        self.goodbye()
