@@ -133,6 +133,13 @@ class TestCLIMessages:
         assert "[1] Start over" in captured.out, "Option to start over should be displayed."
         assert "[2] Exit" in captured.out, "Option to exit should be displayed."
 
+    def test_cli_goodbye_message(self, capsys):
+        """Test the CLI goodbye message."""
+        self.cli.goodbye()
+
+        captured = capsys.readouterr()
+        assert "Thank you for running the simulation. Goodbye!" in captured.out, "Goodbye message should be displayed."
+
 class TestCLIGetFieldUserInput:
     """Test cases for the CLI get field input method."""
 
