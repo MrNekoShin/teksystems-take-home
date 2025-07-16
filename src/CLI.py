@@ -1,3 +1,4 @@
+import re
 
 class CLI:
     def __init__(self):
@@ -55,3 +56,22 @@ class CLI:
         print("Please choose from the following options:")
         print("[1] Start over")
         print("[2] Exit")
+
+    ### Getting user input###
+
+    def get_field_input(self):
+        """Get the field size from user input."""
+
+        field_size = input()
+
+        pattern = r'^\d+\s+\d+$'
+        if not re.match(pattern, field_size):
+            raise ValueError("Invalid input. Please enter two positive integers separated by a space.")
+
+        try:
+            width, height = map(int, field_size.split())
+            if width <= 0 or height <= 0:
+                raise ValueError("Width and height must be positive integers.")
+            return width, height
+        except ValueError as e:
+            raise ValueError(e)
