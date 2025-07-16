@@ -132,3 +132,53 @@ class TestCLIMessages:
         assert "Please choose from the following options:" in captured.out, "Options menu after simulation should be displayed."
         assert "[1] Start over" in captured.out, "Option to start over should be displayed."
         assert "[2] Exit" in captured.out, "Option to exit should be displayed."
+
+class TestCLIGetFieldUserInput:
+    """Test cases for the CLI get field input method."""
+
+    @pytest.fixture(autouse=True)
+    def setup_method(self):
+        """Setup method to run before each test."""
+        self.cli = CLI()
+
+    def test_cli_get_field_input(self, mocker):
+        """Test the CLI field input handling."""
+        user_input = "10 10"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        height, width = self.cli.get_field_input()
+
+        assert height == 10, "Height should be set to 10."
+        assert width == 10, "Width should be set to 10."
+
+    def test_cli_get_field_input_invalid(self, mocker):
+        """Test the CLI field input handling with invalid input."""
+        user_input = "10 -5"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid input. Please enter two positive integers separated by a space."):
+            self.cli.get_field_input()
+
+    def test_cli_get_field_input_non_integer(self, mocker):
+        """Test the CLI field input handling with non-integer input."""
+        user_input = "10 a"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid input. Please enter two positive integers separated by a space."):
+            self.cli.get_field_input()
+
+    def test_cli_get_field_input_invalid_format(self, mocker):
+        """Test the CLI field input handling with invalid format."""
+        user_input = "10, 10"
+        mocker.patch('builtins.input', return_value=user_input)
+    
+        with pytest.raises(ValueError, match="Invalid input. Please enter two positive integers separated by a space."):
+            self.cli.get_field_input()
+
+    def test_cli_get_field_input_empty(self, mocker):
+        """Test the CLI field input handling with empty input."""
+        user_input = ""
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid input. Please enter two positive integers separated by a space."):
+            self.cli.get_field_input()
