@@ -254,7 +254,7 @@ class TestCLIGetOptionsMenuUserInput:
         with pytest.raises(ValueError, match="Invalid choice. Please enter 1 or 2."):
             self.cli.get_options_menu_input()
 
-class TestClIGetCarNameUserInput:
+class TestCLIGetCarNameUserInput:
     """Test cases for the CLI get car name input method."""
     
     @pytest.fixture(autouse=True)
