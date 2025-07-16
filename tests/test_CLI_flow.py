@@ -143,7 +143,7 @@ class TestCLIFlows:
             "FFU",  # Invalid Car instructions
             "FFFF",  # Invalid Car instructions
             "2",  # Run simulation option after adding cars
-            "3"  # Invalid option after simulation
+            "3",  # Invalid option after simulation
             "2"  # Exit option after simulation
         ]
 
