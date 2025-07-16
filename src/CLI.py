@@ -1,5 +1,7 @@
 import re
 
+from src.car import Car
+
 class CLI:
     def __init__(self):
         """Initialize the CLI."""
@@ -132,3 +134,33 @@ class CLI:
             raise ValueError("Invalid choice. Please enter 1 or 2.")
         
         return choice
+    
+    ### Flow control methods ###
+
+    def add_car_loop(self):
+        """Loop to add cars to the simulation."""
+        while True:
+            self.options_menu_message()
+            choice = self.get_options_menu_input()
+
+            if choice == '1':
+                self.add_car()
+            elif choice == '2':
+                break
+
+    def add_car(self):
+        """Add a car to the simulation."""
+        self.add_car_name_message()
+        car_name = self.get_car_name_input()
+
+        self.add_car_initial_position_and_orientation_message(car_name)
+        position, orientation = self.get_car_initial_position_and_orientation_input()
+
+        self.add_car_instructions_message(car_name)
+        instructions = self.get_car_instructions_input()
+        
+        # Create and add the car to the simulation
+        car = Car(name=car_name, position=position, orientation=orientation, instructions=instructions)
+        self.simulation.add_car(car)
+            
+
