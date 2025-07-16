@@ -76,7 +76,7 @@ class TestCLIMessages:
         self.cli.list_cars_message()
         
         captured = capsys.readouterr()
-        assert "List of cars in the simulation:" in captured.out, "List cars message should be displayed."
+        assert "Your current list of cars are:" in captured.out, "List cars message should be displayed."
 
 
     def test_cli_list_cars_with_details(self, capsys):
@@ -105,5 +105,30 @@ class TestCLIMessages:
         self.cli.list_cars_message()
 
         captured = capsys.readouterr()
+        assert "Your current list of cars are:" in captured.out, "List of cars message should be displayed."
+
         assert "Car1, (0, 0) N, F" in captured.out, "First car details should be displayed."
         assert "Car2, (1, 1) W, L" in captured.out, "Second car details should be displayed."
+
+    def test_cli_simulation_results_message(self, capsys):
+        """Test the CLI simulation results message."""
+        from src.simulation import Simulation
+        from src.car import Car
+        self.cli.simulation = Simulation(field_size=(10, 10))
+        self.cli.simulation.add_car(Car(name="Car1", position=(0, 0), orientation='N', instructions="F"))
+        self.cli.simulation.add_car(Car(name="Car2", position=(1, 1), orientation='W', instructions="L"))
+        self.cli.simulation_results_message()
+
+        captured = capsys.readouterr()
+        assert "After simulation, the result is:" in captured.out, "Simulation results message should be displayed."
+        assert "Car1, (0, 0) N, F" in captured.out, "First car results should be displayed."
+        assert "Car2, (1, 1) W, L" in captured.out, "Second car results should be displayed."
+
+    def test_cli_after_simulation_options_menu(self, capsys):
+        """Test the CLI options menu after simulation."""
+        self.cli.after_simulation_options_menu()
+
+        captured = capsys.readouterr()
+        assert "Please choose from the following options:" in captured.out, "Options menu after simulation should be displayed."
+        assert "[1] Start over" in captured.out, "Option to start over should be displayed."
+        assert "[2] Exit" in captured.out, "Option to exit should be displayed."
