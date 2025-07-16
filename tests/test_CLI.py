@@ -365,5 +365,50 @@ class TestCLIGetCarInitialPositionOrientationUserInput:
 class TestCLIGetCarInstructionsUserInput:
     """Test cases for the CLI get car instructions input method."""
 
+    @pytest.fixture(autouse=True)
+    def setup_method(self):
+        """Setup method to run before each test."""
+        self.cli = CLI()
+        
+    def test_cli_get_car_instructions_input(self, mocker):
+        """Test the CLI car instructions input handling."""
+        user_input = "FFRFFFFRRL"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        instructions = self.cli.get_car_instructions_input()
+
+        assert instructions == "FFRFFFFRRL", "Instructions should be set to 'FFRFFFFRRL'."
+
+    def test_cli_get_car_instructions_input_invalid(self, mocker):
+        """Test the CLI car instructions input handling with invalid input."""
+        user_input = "FFRFFFFRRL123"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid command. Only 'L', 'R', and 'F' are allowed."):
+            self.cli.get_car_instructions_input()
+            
+    def test_cli_get_car_instructions_input_special_characters(self, mocker):
+        """Test the CLI car instructions input handling with special characters."""
+        user_input = "FFR@FFFFRRL"
+        mocker.patch('builtins.input', return_value=user_input)
+        with pytest.raises(ValueError, match="Invalid command. Only 'L', 'R', and 'F' are allowed."):
+            self.cli.get_car_instructions_input()
+            
+    def test_cli_get_car_instructions_input_whitespace(self, mocker):
+        """Test the CLI car instructions input handling with whitespace."""
+        user_input = " FFRFFFFRRL "
+        mocker.patch('builtins.input', return_value=user_input)
+        instructions = self.cli.get_car_instructions_input()
+        
+        assert instructions == "FFRFFFFRRL", "Instructions should be stripped of whitespace."
+
+    def test_cli_get_car_instructions_input_mixed_case(self, mocker):
+        """Test the CLI car instructions input handling with mixed case."""
+        user_input = "FfRrL"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid command. Only 'L', 'R', and 'F' are allowed."):
+            self.cli.get_car_instructions_input()
+
 class TestCLIGetAfterSimulationOptionsMenuUserInput:
     """Test cases for the CLI get after simulation options menu input method."""
