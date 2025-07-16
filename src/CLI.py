@@ -88,3 +88,12 @@ class CLI:
             raise ValueError("Invalid choice. Please enter 1 or 2.")
         
         return choice
+    
+    def get_car_name_input(self):
+        """Get the car name from user input."""
+        car_name = input().strip()
+        
+        if not car_name:
+            raise ValueError("Car name cannot be empty.")
+        
+        return car_name
