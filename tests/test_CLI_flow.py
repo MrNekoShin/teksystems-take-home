@@ -128,5 +128,45 @@ class TestCLIFlows:
         # Check if the simulation ran without errors
         assert self.cli.simulation.step == 2
 
+    def test_main_loop_flow_invalid_input_retry(self, mocker):
+        """Test the main loop flow of the CLI with invalid input."""
+
+        side_effects = [
+            "10 a",  # Invalid field size
+            "12 12",  # Valid field size
+            "3",  # Invalid menu option
+            "1",  # Add car option
+            "",  # Invalid Car name
+            "Car1",  # Valid Car name
+            "0 0",  # Invalid Initial position and orientation
+            "0 0 N",  # Initial position and orientation
+            "FFU",  # Invalid Car instructions
+            "FFFF",  # Invalid Car instructions
+            "2",  # Run simulation option after adding cars
+            "3"  # Invalid option after simulation
+            "2"  # Exit option after simulation
+        ]
+
+
+        mocker.patch('builtins.input', side_effect=side_effects)
+
+        from src.CLI import CLI
+        
+        self.cli = CLI()
+        self.cli.main_loop()
+
+        assert self.cli.simulation.field.height == 12
+        assert self.cli.simulation.field.width == 12
+
+        # Check if the car was added correctly
+        assert len(self.cli.simulation.cars) == 1
+        assert self.cli.simulation.cars[0].name == "Car1"
+        assert self.cli.simulation.cars[0].position == (0, 4)
+        assert self.cli.simulation.cars[0].orientation == 'N'
+        assert self.cli.simulation.cars[0].instructions == ""
+
+        
+
+        
 
         
