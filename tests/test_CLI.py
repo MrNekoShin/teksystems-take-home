@@ -183,8 +183,8 @@ class TestCLIGetFieldUserInput:
         with pytest.raises(ValueError, match="Invalid input. Please enter two positive integers separated by a space."):
             self.cli.get_field_input()
 
-class TestCLIGetMenuOptionsUserInput:
-    """Test cases for the CLI get menu options input method."""
+class TestCLIGetOptionsMenuUserInput:
+    """Test cases for the CLI get options menu input method."""
     
     @pytest.fixture(autouse=True)
     def setup_method(self):
@@ -247,3 +247,15 @@ class TestCLIGetMenuOptionsUserInput:
         with pytest.raises(ValueError, match="Invalid choice. Please enter 1 or 2."):
             self.cli.get_options_menu_input()
 
+
+class TestClIGetCarNameUserInput:
+    """Test cases for the CLI get car name input method."""
+
+class TestCLIGetCarInitialPositionOrientationUserInput:
+    """Test cases for the CLI get car initial position and orientation input method."""
+
+class TestCLIGetCarInstructionsUserInput:
+    """Test cases for the CLI get car instructions input method."""
+
+class TestCLIGetAfterSimulationOptionsMenuUserInput:
+    """Test cases for the CLI get after simulation options menu input method."""
