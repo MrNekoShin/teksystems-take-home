@@ -412,3 +412,65 @@ class TestCLIGetCarInstructionsUserInput:
 
 class TestCLIGetAfterSimulationOptionsMenuUserInput:
     """Test cases for the CLI get after simulation options menu input method."""
+
+    @pytest.fixture(autouse=True)
+    def setup_method(self):
+        """Setup method to run before each test."""
+        self.cli = CLI()
+        
+    def test_cli_get_after_simulation_options_menu_input(self, mocker):
+        """Test the CLI after simulation options menu input handling."""
+        user_input = "1"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        option = self.cli.get_after_simulation_options_menu_input()
+        
+        assert option == "1", "Option should be set to 1."
+
+    def test_cli_get_after_simulation_options_menu_input_invalid(self, mocker):
+        """Test the CLI after simulation options menu input handling with invalid input."""
+        user_input = "3"
+        mocker.patch('builtins.input', return_value=user_input)
+        
+        with pytest.raises(ValueError, match="Invalid choice. Please enter 1 or 2."):
+            self.cli.get_after_simulation_options_menu_input()
+
+    def test_cli_get_after_simulation_options_menu_input_empty(self, mocker):
+        """Test the CLI after simulation options menu input handling with empty input."""
+        user_input = ""
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid choice. Please enter 1 or 2."):
+            self.cli.get_after_simulation_options_menu_input()
+            
+    def test_cli_get_after_simulation_options_menu_input_non_numeric(self, mocker):
+        """Test the CLI after simulation options menu input handling with non-numeric input."""
+        user_input = "abc"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid choice. Please enter 1 or 2."):
+            self.cli.get_after_simulation_options_menu_input()
+    
+    def test_cli_get_after_simulation_options_menu_input_multiple_choices(self, mocker):
+        """Test the CLI after simulation options menu input handling with multiple choices."""
+        user_input = "1 2"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid choice. Please enter 1 or 2."):
+            self.cli.get_after_simulation_options_menu_input()
+
+    def test_cli_get_after_simulation_options_menu_input_special_characters(self, mocker):
+        """Test the CLI after simulation options menu input handling with special characters."""
+        user_input = "@"
+        mocker.patch('builtins.input', return_value=user_input)
+        
+        with pytest.raises(ValueError, match="Invalid choice. Please enter 1 or 2."):
+            self.cli.get_after_simulation_options_menu_input()
+
+    def test_cli_get_after_simulation_options_menu_input_invalid_input(self, mocker):
+        """Test the CLI after simulation options menu input handling with invalid input."""
+        user_input = "1a"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Invalid choice. Please enter 1 or 2."):
+            self.cli.get_after_simulation_options_menu_input()
