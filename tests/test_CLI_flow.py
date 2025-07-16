@@ -165,8 +165,98 @@ class TestCLIFlows:
         assert self.cli.simulation.cars[0].orientation == 'N'
         assert self.cli.simulation.cars[0].instructions == ""
 
-        
+class TestCLIKeyboardInterrupt:
+    """Test cases for CLI keyboard interrupt handling."""
 
-        
+    def setup_method(self):
+        """Setup method to initialize the CLI instance."""
+        from src.CLI import CLI
+        self.cli = CLI()
 
+    def test_create_field_flow_interupt(self, mocker, capsys):
+        """Test the main loop flow of the CLI with keyboard interrupt handling."""
+
+        side_effects = [
+            KeyboardInterrupt()
+        ]
+
+        mocker.patch('builtins.input', side_effect=side_effects)
+
+        self.cli.main_loop()
+
+        # Capture the output
+        captured = capsys.readouterr()
+
+        # Check if the correct message is printed
+        assert "Simulation interrupted. Goodbye!" in captured.out
+
+    def test_option_loop_flow_interupt(self, mocker, capsys):
+        """Test the option loop flow of the CLI with keyboard interrupt handling."""
+
+        side_effects = [
+            "10 10",  # Field size
+            KeyboardInterrupt()  # Simulate keyboard interrupt
+        ]
+
+        mocker.patch('builtins.input', side_effect=side_effects)
+
+        self.cli.main_loop()
+
+        # Capture the output
+        captured = capsys.readouterr()
+
+        # Check if the correct message is printed
+        assert self.cli.simulation.field.height == 10
+        assert self.cli.simulation.field.width == 10
         
+        assert "Simulation interrupted. Goodbye!" in captured.out
+
+    def test_add_car_loop_flow_interupt(self, mocker, capsys):
+        """Test the add car loop flow of the CLI with keyboard interrupt handling."""
+
+        side_effects = [
+            "10 10",  # Field size
+            "1",  # Add car option
+            "Car1",  # Car name
+            "0 0 N",  # Initial position and orientation
+            KeyboardInterrupt()  # Simulate keyboard interrupt
+        ]
+
+        mocker.patch('builtins.input', side_effect=side_effects)
+
+        self.cli.main_loop()
+
+        # Capture the output
+        captured = capsys.readouterr()
+
+        # Check if the correct message is printed
+        assert len(self.cli.simulation.cars) == 0
+
+        assert "Simulation interrupted. Goodbye!" in captured.out
+
+    def test_after_simulation_flow_interupt(self, mocker, capsys):
+        """Test the flow after simulation with keyboard interrupt handling."""
+
+        side_effects = [
+            "10 10",  # Field size
+            "1",  # Add car option
+            "Car1",  # Car name
+            "0 0 N",  # Initial position and orientation
+            "FFFF",  # Car instructions
+            "2",  # Run simulation option
+            KeyboardInterrupt()  # Simulate keyboard interrupt
+        ]
+
+        mocker.patch('builtins.input', side_effect=side_effects)
+
+        self.cli.main_loop()
+
+        # Capture the output
+        captured = capsys.readouterr()
+
+        # Check if the correct message is printed
+        assert self.cli.simulation.cars[0].name == "Car1"
+        assert self.cli.simulation.step > 0  # Ensure the simulation ran at least one step
+
+        assert "Simulation interrupted. Goodbye!" in captured.out
+
