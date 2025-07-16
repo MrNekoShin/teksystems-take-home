@@ -32,7 +32,12 @@ class Car:
 
         
     def __repr__(self):
-        return f"{self.name}, {self.position} {self.orientation}, {self.instructions}"
+        """Return a string representation of the car."""
+
+        if self.collision:
+            return f"{self.name}, collides with {self.collision.name} at ({self.position[0]},{self.position[1]}) at step {self.collision_step})"
+        else:
+            return f"{self.name}, {self.position} {self.orientation}{f", {self.instructions}" if self.instructions else ""}"
     
     def rotate(self, direction):
         """Rotate the car left or right."""

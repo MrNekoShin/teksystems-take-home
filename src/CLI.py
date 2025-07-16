@@ -44,7 +44,7 @@ class CLI:
 
         if self.simulation and self.simulation.cars:
             for car in self.simulation.cars.values():
-                print(car)
+                print(f"- {car}")
 
     def simulation_results_message(self):
         """Display the results of the simulation."""
@@ -52,7 +52,7 @@ class CLI:
 
         if self.simulation and self.simulation.cars:
             for car in self.simulation.cars.values():
-                print(car)
+                print(f"- {car}")
 
     def after_simulation_options_menu_message(self):
         """Display options after simulation."""
