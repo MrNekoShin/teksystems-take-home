@@ -75,3 +75,12 @@ class CLI:
             return width, height
         except ValueError as e:
             raise ValueError(e)
+    
+    def get_options_menu_input(self):
+        """Get the user's choice from the options menu."""
+        choice = input()
+
+        if choice not in ['1', '2']:
+            raise ValueError("Invalid choice. Please enter 1 or 2.")
+        
+        return choice
