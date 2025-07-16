@@ -10,37 +10,37 @@ class CLI:
 
     def welcome(self):
         """Display the welcome message."""
-        print("Welcome to Auto Driving Car Simulation!\n")
+        print("Welcome to Auto Driving Car Simulation!")
 
     def create_field_message(self):
         """Prompt user to create a field."""
-        print("Please enter the width and height of the simulation field in x y format:")
+        print("\nPlease enter the width and height of the simulation field in x y format:")
 
     def field_created_message(self, width, height):
         """Display confirmation of field creation."""
-        print(f"You have created a field of {width} x {height}.")
+        print(f"\nYou have created a field of {width} x {height}.")
 
     def options_menu_message(self):
         """Display the options menu."""
-        print("Please choose from the following options:")
+        print("\nPlease choose from the following options:")
         print("[1] Add a car to field")
         print("[2] Run simulation")
 
     def add_car_name_message(self):
         """Prompt user to enter car name."""
-        print("Please enter the name of the car:")
+        print("\nPlease enter the name of the car:")
 
     def add_car_initial_position_and_orientation_message(self, car_name):
         """Prompt user to enter car position."""
-        print(f"Please enter initial position of car {car_name} in x y Direction format:")
+        print(f"\nPlease enter initial position of car {car_name} in x y Direction format:")
 
     def add_car_instructions_message(self, car_name):
         """Prompt user to enter car instructions."""
-        print(f"Please enter the commands for car {car_name}:")
+        print(f"\nPlease enter the commands for car {car_name}:")
 
     def list_cars_message(self):
         """Display the list of cars in the simulation."""
-        print("Your current list of cars are:")
+        print("\nYour current list of cars are:")
 
         if self.simulation and self.simulation.cars:
             for car in self.simulation.cars.values():
@@ -48,7 +48,7 @@ class CLI:
 
     def simulation_results_message(self):
         """Display the results of the simulation."""
-        print("After simulation, the result is:")
+        print("\nAfter simulation, the result is:")
 
         if self.simulation and self.simulation.cars:
             for car in self.simulation.cars.values():
@@ -56,13 +56,13 @@ class CLI:
 
     def after_simulation_options_menu_message(self):
         """Display options after simulation."""
-        print("Please choose from the following options:")
+        print("\nPlease choose from the following options:")
         print("[1] Start over")
         print("[2] Exit")
 
     def goodbye(self):
         """Display goodbye message."""
-        print("Thank you for running the simulation. Goodbye!")
+        print("\nThank you for running the simulation. Goodbye!")
 
     ### Getting user input###
 
