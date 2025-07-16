@@ -254,9 +254,31 @@ class TestCLIGetOptionsMenuUserInput:
         with pytest.raises(ValueError, match="Invalid choice. Please enter 1 or 2."):
             self.cli.get_options_menu_input()
 
-
 class TestClIGetCarNameUserInput:
     """Test cases for the CLI get car name input method."""
+    
+    @pytest.fixture(autouse=True)
+    def setup_method(self):
+        """Setup method to run before each test."""
+        self.cli = CLI()
+        
+    def test_cli_get_car_name_input(self, mocker):
+        """Test the CLI car name input handling."""
+        user_input = "TestCar"
+        mocker.patch('builtins.input', return_value=user_input)
+
+        car_name = self.cli.get_car_name_input()
+
+        assert car_name == "TestCar", "Car name should be set to 'TestCar'."
+
+    def test_cli_get_car_name_input_empty(self, mocker):
+        """Test the CLI car name input handling with empty input."""
+        user_input = ""
+        mocker.patch('builtins.input', return_value=user_input)
+
+        with pytest.raises(ValueError, match="Car name cannot be empty."):
+            self.cli.get_car_name_input()
+            
 
 class TestCLIGetCarInitialPositionOrientationUserInput:
     """Test cases for the CLI get car initial position and orientation input method."""
