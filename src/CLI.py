@@ -57,6 +57,10 @@ class CLI:
         print("[1] Start over")
         print("[2] Exit")
 
+    def goodbye(self):
+        """Display goodbye message."""
+        print("Thank you for running the simulation. Goodbye!")
+
     ### Getting user input###
 
     def get_field_input(self):
