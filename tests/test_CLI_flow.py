@@ -43,7 +43,7 @@ class TestCLIFlows:
         assert self.cli.simulation.cars[1].instructions == "FFRFF"
 
 
-    def test_main_loop_flow_once(self, mocker):
+    def test_main_loop_flow_once(self, mocker, capsys):
         """Test the main loop flow of the CLI."""
 
         side_effects = [
@@ -79,12 +79,21 @@ class TestCLIFlows:
         assert self.cli.simulation.cars[1].instructions == ""
         assert self.cli.simulation.cars[0].position == (2, 7)
         assert self.cli.simulation.cars[1].position == (8, 3)
+        assert self.cli.simulation.cars[0].orientation == 'N'
+        assert self.cli.simulation.cars[1].orientation == 'E'
 
         assert self.cli.simulation.cars[0].collision is None
         assert self.cli.simulation.cars[1].collision is None
 
         # Check if the simulation ran without errors
         assert self.cli.simulation.step > 0
+
+        # Capture the output
+        captured = capsys.readouterr()
+
+        # Check if the correct messages are printed
+        assert "- Car1, (2, 7) N" in captured.out
+        assert "- Car2, (8, 3) E" in captured.out
 
 
     def test_main_loop_flow_multiple(self, mocker):
@@ -164,6 +173,65 @@ class TestCLIFlows:
         assert self.cli.simulation.cars[0].position == (0, 4)
         assert self.cli.simulation.cars[0].orientation == 'N'
         assert self.cli.simulation.cars[0].instructions == ""
+
+
+    def test_main_loop_collision_handling(self, mocker, capsys):
+        """Test the main loop flow of the CLI with collision handling."""
+
+        side_effects = [
+            "10 10",  # Field size
+            "1",  # Add car option
+            "Car1",  # Car name
+            "0 6 S",  # Initial position and orientation
+            "FFFFF",  # Car instructions
+            "1",  # Add another car option
+            "Car2",  # Second car name
+            "0 0 N",  # Second car initial position and orientation (collision with Car1)
+            "FFFFF",  # Second car instructions
+            "2",  # Run simulation option after adding cars
+            "2"  # Exit option after simulation
+        ]
+
+        mocker.patch('builtins.input', side_effect=side_effects)
+        
+        from src.CLI import CLI
+        self.cli = CLI()
+        self.cli.main_loop()
+        
+        # Check if the field was created
+        assert self.cli.simulation.field.height == 10
+        assert self.cli.simulation.field.width == 10
+
+        # Check if the cars were added correctly
+        assert len(self.cli.simulation.cars) == 2
+
+        assert self.cli.simulation.cars[0].name == "Car1"
+        assert self.cli.simulation.cars[1].name == "Car2"
+
+        assert self.cli.simulation.cars[0].collision is not None
+        assert self.cli.simulation.cars[1].collision is not None
+
+        assert self.cli.simulation.cars[0].position == (0, 3)
+        assert self.cli.simulation.cars[1].position == (0, 3)
+
+        assert self.cli.simulation.cars[0].instructions == "FF"
+        assert self.cli.simulation.cars[1].instructions == "FF"
+
+        assert self.cli.simulation.cars[0].collision.collision_step == 3
+        assert self.cli.simulation.cars[1].collision.collision_step == 3
+
+        # Capture the output
+        captured = capsys.readouterr()
+
+        print(captured.out)
+
+        print(self.cli.simulation.cars[0].collision.collision_step)
+
+        # Check if the correct message is printed
+        assert "- Car1, collides with Car2 at (0,3) at step 3" in captured.out
+        assert "- Car2, collides with Car1 at (0,3) at step 3" in captured.out
+
+
 
 class TestCLIKeyboardInterrupt:
     """Test cases for CLI keyboard interrupt handling."""
