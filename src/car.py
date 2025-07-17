@@ -1,14 +1,17 @@
 
+from typing import Dict, Tuple, Optional
+
+
 class Car:
 
-    DIRECTIONS_DELTA = {
+    DIRECTIONS_DELTA: Dict[str, Tuple[int, int]] = {
         'N': (0, 1),
         'E': (1, 0),
         'S': (0, -1),
         'W': (-1, 0)
     }
 
-    def __init__(self, name, position, orientation, instructions):
+    def __init__(self, name: str, position: Tuple[int, int], orientation: str, instructions: str) -> None:
         """Initialize the Car with an position and orientation."""
 
         if orientation not in ['N', 'E', 'S', 'W']:
@@ -23,15 +26,15 @@ class Car:
         if not isinstance(instructions, str):
             raise ValueError("Instructions must be a string.")
 
-        self.name = name
-        self.position = position
-        self.orientation = orientation
-        self.instructions = instructions
-        self.collision = None
-        self.collision_step = None
+        self.name: str = name
+        self.position: Tuple[int, int] = position
+        self.orientation: str = orientation
+        self.instructions: str = instructions
+        self.collision: Optional['Car'] = None
+        self.collision_step: Optional[int] = None
 
         
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return a string representation of the car."""
 
         if self.collision:
@@ -39,7 +42,7 @@ class Car:
         else:
             return f"{self.name}, {self.position} {self.orientation}{f", {self.instructions}" if self.instructions else ""}"
     
-    def rotate(self, direction):
+    def rotate(self, direction: str) -> None:
         """Rotate the car left or right."""
         if direction not in ['L', 'R']:
             raise ValueError("Invalid rotation command.")
@@ -54,17 +57,17 @@ class Car:
         
         self.orientation = orientations[idx]
         
-    def next_position(self):
+    def next_position(self) -> Tuple[int, int]:
         """Calculate the next position based on current orientation."""
         delta = self.DIRECTIONS_DELTA[self.orientation]
         return (self.position[0] + delta[0], self.position[1] + delta[1])
     
 
-    def move(self):
+    def move(self) -> None:
         """Move the car forward in the current orientation."""
         self.position = self.next_position()
 
-    def collided(self, other_car, step):
+    def collided(self, other_car: 'Car', step: int) -> None:
         """Handle collision with another car."""
         self.collision = other_car
         other_car.collision = self

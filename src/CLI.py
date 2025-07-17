@@ -1,44 +1,45 @@
 import re
+from typing import Optional, Tuple
 
 from src.car import Car
 from src.simulation import Simulation
 
 class CLI:
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the CLI."""
-        self.simulation = None  # This will hold the simulation instance once created
+        self.simulation: Optional[Simulation] = None  # This will hold the simulation instance once created
 
-    def welcome(self):
+    def welcome(self) -> None:
         """Display the welcome message."""
         print("Welcome to Auto Driving Car Simulation!")
 
-    def create_field_message(self):
+    def create_field_message(self) -> None:
         """Prompt user to create a field."""
         print("\nPlease enter the width and height of the simulation field in x y format:")
 
-    def field_created_message(self, width, height):
+    def field_created_message(self, width: int, height: int) -> None:
         """Display confirmation of field creation."""
         print(f"\nYou have created a field of {width} x {height}.")
 
-    def options_menu_message(self):
+    def options_menu_message(self) -> None:
         """Display the options menu."""
         print("\nPlease choose from the following options:")
         print("[1] Add a car to field")
         print("[2] Run simulation")
 
-    def add_car_name_message(self):
+    def add_car_name_message(self) -> None:
         """Prompt user to enter car name."""
         print("\nPlease enter the name of the car:")
 
-    def add_car_initial_position_and_orientation_message(self, car_name):
+    def add_car_initial_position_and_orientation_message(self, car_name: str) -> None:
         """Prompt user to enter car position."""
         print(f"\nPlease enter initial position of car {car_name} in x y Direction format:")
 
-    def add_car_instructions_message(self, car_name):
+    def add_car_instructions_message(self, car_name: str) -> None:
         """Prompt user to enter car instructions."""
         print(f"\nPlease enter the commands for car {car_name}:")
 
-    def list_cars_message(self):
+    def list_cars_message(self) -> None:
         """Display the list of cars in the simulation."""
         print("\nYour current list of cars are:")
 
@@ -46,7 +47,7 @@ class CLI:
             for car in self.simulation.cars.values():
                 print(f"- {car}")
 
-    def simulation_results_message(self):
+    def simulation_results_message(self) -> None:
         """Display the results of the simulation."""
         print("\nAfter simulation, the result is:")
 
@@ -54,19 +55,19 @@ class CLI:
             for car in self.simulation.cars.values():
                 print(f"- {car}")
 
-    def after_simulation_options_menu_message(self):
+    def after_simulation_options_menu_message(self) -> None:
         """Display options after simulation."""
         print("\nPlease choose from the following options:")
         print("[1] Start over")
         print("[2] Exit")
 
-    def goodbye(self):
+    def goodbye(self) -> None:
         """Display goodbye message."""
         print("\nThank you for running the simulation. Goodbye!")
 
     ### Getting user input###
 
-    def get_field_input(self):
+    def get_field_input(self) -> Tuple[int, int]:
         """Get the field size from user input."""
 
         field_size = input()
@@ -85,7 +86,7 @@ class CLI:
         except KeyboardInterrupt:
             raise
     
-    def get_options_menu_input(self):
+    def get_options_menu_input(self) -> str:
         """Get the user's choice from the options menu."""
         try:
             choice = input()
@@ -97,7 +98,7 @@ class CLI:
         except KeyboardInterrupt:
             raise
     
-    def get_car_name_input(self):
+    def get_car_name_input(self) -> str:
         """Get the car name from user input."""
         try:
             car_name = input().strip()
@@ -109,7 +110,7 @@ class CLI:
         except KeyboardInterrupt:
             raise
     
-    def get_car_initial_position_and_orientation_input(self):
+    def get_car_initial_position_and_orientation_input(self) -> Tuple[Tuple[int, int], str]:
         """Get the car's initial position and orientation."""
         try:
             position = input().strip()
@@ -128,7 +129,7 @@ class CLI:
         except KeyboardInterrupt:
             raise
         
-    def get_car_instructions_input(self):
+    def get_car_instructions_input(self) -> str:
         """Get the car's instructions."""
         try:
             instructions = input().strip()
@@ -141,7 +142,7 @@ class CLI:
         except KeyboardInterrupt:
             raise
     
-    def get_after_simulation_options_menu_input(self):
+    def get_after_simulation_options_menu_input(self) -> str:
         """Get the user's choice after simulation."""
         try:
             choice = input()
@@ -155,7 +156,7 @@ class CLI:
     
     ### Flow control methods ###
 
-    def add_car_loop(self):
+    def add_car_loop(self) -> None:
         """Loop to add cars to the simulation."""
         try:
             while True:
@@ -173,7 +174,7 @@ class CLI:
         except KeyboardInterrupt:
             raise
 
-    def add_car(self):
+    def add_car(self) -> None:
         """Add a car to the simulation."""
         try:
             while True:
@@ -213,7 +214,7 @@ class CLI:
         car = Car(name=car_name, position=position, orientation=orientation, instructions=instructions)
         self.simulation.add_car(car)
     
-    def create_field_loop(self):
+    def create_field_loop(self) -> None:
         """Loop to create the simulation field."""
         try:
             while True:
@@ -231,7 +232,7 @@ class CLI:
         self.simulation = Simulation(field_size=(width, height))
         self.field_created_message(width, height)
 
-    def after_simulation_loop(self):
+    def after_simulation_loop(self) -> str:
         """Loop to handle options after simulation."""
         try:
             while True:
@@ -247,7 +248,7 @@ class CLI:
         
 
 
-    def main_loop(self):
+    def main_loop(self) -> None:
         """Main loop to run the CLI."""
         self.welcome()
         

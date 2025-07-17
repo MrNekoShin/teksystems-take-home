@@ -1,3 +1,5 @@
+from typing import Dict, Set, List, Union, Tuple
+
 from .car import Car
 from .field import Field
 
@@ -5,18 +7,18 @@ from .field import Field
 class Simulation:
     """Simulation class to manage the simulation environment."""
 
-    def __init__(self, field_size):
+    def __init__(self, field_size: Tuple[int, int]) -> None:
         """Initialize the simulation with a given field size."""
         if not isinstance(field_size, tuple) or len(field_size) != 2 or not all(isinstance(dim, int) and dim > 0 for dim in field_size):
             raise ValueError("Field size must be a tuple of two positive integers.")
         
-        self.field = Field(width=field_size[0], height=field_size[1])
-        self.cars = {}
-        self.car_names = set()
-        self.cars_in_field = {}
-        self.step = 0  # Track the simulation step
+        self.field: Field = Field(width=field_size[0], height=field_size[1])
+        self.cars: Dict[int, Car] = {}
+        self.car_names: Set[str] = set()
+        self.cars_in_field: Dict[Tuple[int, int], Union[Car, List[Car]]] = {}
+        self.step: int = 0  # Track the simulation step
 
-    def add_car(self, car):
+    def add_car(self, car: Car) -> None:
         """Add a car to the simulation."""
         if not isinstance(car, Car):
             raise ValueError("Invalid car.")
@@ -38,7 +40,7 @@ class Simulation:
         self.car_names.add(car.name)
 
         
-    def move_car(self, car_index):
+    def move_car(self, car_index: int) -> bool:
         """Move a car in the simulation."""
         
         car = self.cars[car_index]
@@ -72,7 +74,7 @@ class Simulation:
 
         return True
     
-    def execute_instructions(self, car_index):
+    def execute_instructions(self, car_index: int) -> None:
         """Execute the instructions for a car."""
         car = self.cars[car_index]
 
@@ -90,7 +92,7 @@ class Simulation:
 
         car.instructions = car.instructions[1:]  # Remove the executed command
     
-    def run_simulation(self):
+    def run_simulation(self) -> None:
         """Run the simulation by executing all car instructions."""
         
         while True:
