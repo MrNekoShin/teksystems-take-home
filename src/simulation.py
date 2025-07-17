@@ -54,7 +54,7 @@ class Simulation:
             return False
 
         #remove car from current position in the field
-        if car in self.cars_in_field:
+        if car.position in self.cars_in_field:
             del self.cars_in_field[car.position]
 
         next_position = car.next_position()
