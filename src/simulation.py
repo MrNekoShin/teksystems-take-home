@@ -1,11 +1,5 @@
-try:
-    # Try absolute imports first (for pytest, imports from outside)
-    from src.car import Car
-    from src.field import Field
-except ImportError:
-    # Fall back to direct imports (for running directly)
-    from car import Car
-    from field import Field
+from .car import Car
+from .field import Field
 
 
 class Simulation:
