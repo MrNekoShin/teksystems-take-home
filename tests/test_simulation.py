@@ -55,7 +55,7 @@ class TestSimulationCarManagement:
         with pytest.raises(ValueError, match="Invalid car."):
             self.simulation.add_car("Not a car instance")
 
-    def add_car_with_invalid_position(self):
+    def test_add_car_with_invalid_position(self):
         """Test adding a car with an invalid position."""
         from src.car import Car
         car = Car(name="InvalidPositionCar", position=(10, 10), orientation='N', instructions="")
@@ -167,7 +167,27 @@ class TestSimulationCarFieldMovement:
         car.orientation = 'W'
         valid = self.simulation.move_car(0)
         assert valid is True
-        assert car.position == (0, 0)  
+        assert car.position == (0, 0)
+
+    def test_move_car_field_tracking(self):
+        """Test that cars are properly tracked in the field during movement."""
+        car = self.simulation.cars[0]
+        car.position = (5, 5)
+        car.orientation = 'N'
+        
+        # Manually add car to field tracking (simulating proper initialization)
+        self.simulation.cars_in_field[(5, 5)] = [car]
+        
+        # Move car and verify field tracking is updated
+        valid = self.simulation.move_car(0)
+        assert valid is True
+        assert car.position == (5, 6)
+        
+        # Old position should be removed from field tracking
+        assert (5, 5) not in self.simulation.cars_in_field
+        # New position should be added to field tracking
+        assert (5, 6) in self.simulation.cars_in_field
+        assert self.simulation.cars_in_field[(5, 6)] == car  
 
         
 class TestSimulationCarCollision:
